@@ -10,8 +10,9 @@ const Hello = ({navigation}) => {
       <Text>Hello {name.firstName} From Native</Text>
       <TextInput
         style={styles.input}
-        onChangeText={(newText) => {setName({firstName: newText}
-        )}}
+        onChangeText={(newText) => {
+          setName({firstName: newText});
+        }}
         value={name}
         placeholder={"Enter your first name"}
       />
