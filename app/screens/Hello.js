@@ -13,7 +13,7 @@ const Hello = ({navigation}) => {
         onChangeText={(newText) => {
           setName({firstName: newText});
         }}
-        value={name}
+        value={name.firstName}
         placeholder={"Enter your first name"}
       />
       <Button touchSoundDisabled={true} title={"Go Home"} onPress={() => {navigation.navigate("Home", {name: name})}}></Button>

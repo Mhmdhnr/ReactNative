@@ -1,5 +1,7 @@
+// import 'react-native-gesture-handler'
+import 'react-native-reanimated'
 import React from 'react';
-import {Node} from 'react';
+// import {Node} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,6 +18,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Hello from './app/screens/Hello';
 import Home from './app/screens/Home';
+import Scanner from './app/screens/Scanner';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -29,7 +32,6 @@ const App = () => {
     console.log(name)
   }
   const Stack = createNativeStackNavigator();
-  // navigation.navigate('Hello')
   return (
       <NavigationContainer>
         <Stack.Navigator>
@@ -41,6 +43,10 @@ const App = () => {
           <Stack.Screen 
             name="Home" 
             component={Home} />
+            
+          <Stack.Screen 
+            name="Scanner" 
+            component={Scanner} />
         </Stack.Navigator>
       </NavigationContainer>
       /* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */
