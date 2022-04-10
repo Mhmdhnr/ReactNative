@@ -5,6 +5,7 @@ const Hello = ({navigation}) => {
     firstName: "User",
     lastName: ""
   });
+  
   return (
     <View style={styles.hello}>
       <Text>Hello {name.firstName} From Native</Text>

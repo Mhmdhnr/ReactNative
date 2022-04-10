@@ -1,11 +1,12 @@
-import * as React from 'react';
-
+import React, {useContext} from 'react';
 import {View, StyleSheet, Text, PermissionsAndroid } from 'react-native';
 import { useCameraDevices } from 'react-native-vision-camera';
 import { Camera } from 'react-native-vision-camera';
 import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
+import {UserContext} from '../../App';
 
 const Scanner = ({navigation}) => {
+  const [app, setApp] = useContext(UserContext);
   const [hasPermission, setHasPermission] = React.useState("authorized");
   const devices = useCameraDevices();
   const device = devices.back;
@@ -45,7 +46,7 @@ const Scanner = ({navigation}) => {
         {barcodes.map((barcode, idx) => (
           <View style={styles.result}>
             <Text key={idx} style={styles.barcodeTextURL}>
-              {barcode.displayValue}
+              {app.username + " is " + barcode.displayValue}
             </Text>
           </View>
         ))}
