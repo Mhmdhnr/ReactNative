@@ -1,40 +1,27 @@
 import React, {useContext} from 'react';
-import {View, StyleSheet, Text, PermissionsAndroid } from 'react-native';
-import { useCameraDevices } from 'react-native-vision-camera';
-import { Camera } from 'react-native-vision-camera';
-import { useScanBarcodes, BarcodeFormat } from 'vision-camera-code-scanner';
+import {View, StyleSheet, Text, PermissionsAndroid} from 'react-native';
+import {useCameraDevices} from 'react-native-vision-camera';
+import {Camera} from 'react-native-vision-camera';
+import {useScanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
 import {UserContext} from '../../App';
+import { colors } from '../styles/variables';
 
 const Scanner = ({navigation}) => {
   const [app, setApp] = useContext(UserContext);
-  const [hasPermission, setHasPermission] = React.useState("authorized");
+  // const [hasPermission, setHasPermission] = React.useState('authorized');
+  const hasPermission = true;
   const devices = useCameraDevices();
   const device = devices.back;
-  
+
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
 
-  // Alternatively you can use the underlying function:
-  //
-  // const frameProcessor = useFrameProcessor((frame) => {
-  //   'worklet';
-  //   const detectedBarcodes = scanBarcodes(frame, [BarcodeFormat.QR_CODE], { checkInverted: true });
-  //   runOnJS(setBarcodes)(detectedBarcodes);
-  // }, []);
-  // React.useEffect(() => {
-  //   (async () => {
-  //     const status = await Camera.requestCameraPermission();
-  //     console.log(status)
-  //     setHasPermission(status !== 'authorized');
-  //     console.log(hasPermission)
-  //   })();
-  // }, []);
 
+  
   return (
     device != null &&
-    hasPermission &&
-    (
+    hasPermission && (
       <>
         <Camera
           style={StyleSheet.absoluteFill}
@@ -44,16 +31,17 @@ const Scanner = ({navigation}) => {
           frameProcessorFps={1}
         />
         {barcodes.map((barcode, idx) => (
+          idx === 0 &&
           <View style={styles.result}>
             <Text key={idx} style={styles.barcodeTextURL}>
-              {app.username + " is " + barcode.displayValue}
+              {app.username + ' is ' + barcode.displayValue}
             </Text>
           </View>
         ))}
       </>
     )
   );
-}
+};
 
 const styles = StyleSheet.create({
   barcodeTextURL: {
@@ -62,7 +50,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   result: {
-    backgroundColor: "dodgerblue"
-  }
+    backgroundColor: 'rgba(6, 184, 157, 0.5)',
+    borderRadius: 20,
+    padding: 10,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
 });
 export default Scanner;

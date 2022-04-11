@@ -1,24 +1,27 @@
+import {colors} from '../styles/variables.js';
 import React, {useContext} from 'react';
-import {Text, View, Button, PermissionsAndroid} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Pressable,
+  PermissionsAndroid,
+} from 'react-native';
 import {useQuery} from 'react-query';
 import {UserContext} from '../../App';
 
-// const queryClient = new QueryClient();
-
-// const fetchUser = async () => {
-//   await fetch('https://jsonplaceholder.typicode.com/users/1').then(res => {
-//     return res.json();
-//   });
-// };
 const fetchUser = async () => {
-  const res = await fetch('https://mocki.io/v1/f3e9e462-fbcf-4977-898c-1342055f515f');
+  const res = await fetch(
+    'https://mocki.io/v1/f3e9e462-fbcf-4977-898c-1342055f515f',
+  );
   return res.json();
 };
 const Home = ({navigation}) => {
   const [app, setApp] = useContext(UserContext);
   const {data, status} = useQuery('user', fetchUser, {
     onSuccess: data => {
-      setApp({username: data[0].name})
+      setApp({username: data[0].name});
     },
   });
   console.log(status);
@@ -26,7 +29,6 @@ const Home = ({navigation}) => {
 
   const requestCameraPermission = async () => {
     try {
-      console.log('requesting');
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
         {
@@ -41,7 +43,7 @@ const Home = ({navigation}) => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         navigation.navigate('Scanner');
-        // setApp({nav: "scanner"})
+        setApp({nav: 'scanner'});
       } else {
         console.log('Camera permission denied');
       }
@@ -50,6 +52,16 @@ const Home = ({navigation}) => {
     }
   };
 
+  if (status === 'success') {
+    return (
+      <View style={styles.total}>
+        <Text style={styles.heading}>Hello {data[0].name}</Text>
+        <Pressable style={styles.button} onPress={requestCameraPermission}>
+          <Text style={styles.buttonText}>Scan</Text>
+        </Pressable>
+      </View>
+    );
+  }
   if (status === 'loading') {
     return (
       <View>
@@ -64,16 +76,33 @@ const Home = ({navigation}) => {
       </View>
     );
   }
-  if (status === 'success') {
-    return (
-      <View>
-        <Text>Hello from Home {data[0].name}</Text>
-        <Button title={'Scan'} onPress={requestCameraPermission}></Button>
-      </View>
-    );
-  }
-  // </QueryClientProvider>
-  // );
 };
-
+const styles = StyleSheet.create({
+  total: {
+    paddingHorizontal: 10,
+    paddingVertical: 20,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    backgroundColor: colors.primary,
+  },
+  heading: {
+    fontSize: 30,
+    marginBottom: 20,
+    color: 'white',
+  },
+  button: {
+    backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginTop: 30,
+  },
+  buttonText: {
+    color: colors.primary,
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+});
 export default Home;
